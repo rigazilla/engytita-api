@@ -1,0 +1,13 @@
+syntax = "proto3";
+package config.cache.v1alpha;
+
+message Datasource {
+  string name = 1;
+  string group = 2;
+  enum Kind {
+    Database = 0;
+    Secret = 1;
+  }
+  Kind kind = 3;
+  string id = 4;
+}
