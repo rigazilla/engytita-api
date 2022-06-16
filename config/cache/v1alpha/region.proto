@@ -1,0 +1,40 @@
+syntax = "proto3";
+package config.cache.v1alpha;
+
+import "google/protobuf/duration.proto";
+
+// TODO  option java_package = define package naming for java
+// TODO  option java_outer_classname = define outer class name
+option java_multiple_files = true;
+// TODO option go_package = define package naming for go
+
+message Wildcard { string value = 1; }
+
+message Jsonpath { string value = 1; }
+
+message Rule {
+  oneof rule_type {
+    Wildcard wildcard = 1;
+    Jsonpath jsonpath = 2;
+  }
+}
+
+message Http { string url = 1; }
+
+message Preload {
+  oneof preload_type { Http http = 1; }
+}
+
+message Count { int64 value = 1; }
+
+message Bound {
+  oneof bound_type { Count count = 1; }
+}
+message Region {
+  string name = 1;
+  string datasource = 2;
+  Rule rule = 3;
+  Preload preload = 4;
+  google.protobuf.Duration expiration = 5;
+  Bound bound = 6;
+}
