@@ -23,6 +23,7 @@ message Http { string url = 1; }
 
 message Preload {
   oneof preload_type { Http http = 1; }
+  string schedule = 2;
 }
 
 message Count { int64 value = 1; }
@@ -30,11 +31,19 @@ message Count { int64 value = 1; }
 message Bound {
   oneof bound_type { Count count = 1; }
 }
+
+message Expiration {
+  oneof expiration_type {
+    google.protobuf.Duration lifespan = 1;
+    string schedule = 2;
+  }
+}
+     
 message Region {
   string name = 1;
   string datasource = 2;
   Rule rule = 3;
   Preload preload = 4;
-  google.protobuf.Duration expiration = 5;
+  Expiration expiration = 5;
   Bound bound = 6;
 }
