@@ -1,19 +1,16 @@
 syntax = "proto3";
+package config.cache.v1alpha;
+
+import "config/cache/v1alpha/region.proto";
+
 // TODO  option java_package = define package naming for java
 // TODO  option java_outer_classname = define outer class name
 option java_multiple_files = true;
 // TODO option go_package = verify below value is ok
 option go_package = "github.com/engytita/engytita-api/example/golang;v1alpha";
 
-package config.cache.v1alpha;
-
-message Datasource {
+message Cache {
   string name = 1;
-  string group = 2;
-  enum Kind {
-    Database = 0;
-    Secret = 1;
-  }
-  Kind kind = 3;
-  string id = 4;
+  string namespace = 2;
+  repeated Region regions = 3;
 }

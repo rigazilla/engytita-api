@@ -29,8 +29,8 @@ public class AppProtobufToJson {
                 // Build region2
                 // {"name": "region2", "datasource": "DataSource2"
                 // , "rule": {"wildcard": {"value": "/pets/(.*)"}}
-                // , "preload": {"http": {"url": "value"}
-                // , "schedule": "0 0 1 * *"},"expiration": {"lifespan": "86400s"}
+                // , "preload": {"http": {"url": "value"},"schedule": "0 0 1 * *"}
+                // ,"expiration": {"lifespan": "86400s"}
                 // ,"bound": {"count": {"value": "1000"}}}
                 Wildcard.Builder wc = Wildcard.newBuilder().setValue("/pets/(.*)");
                 r = Region.newBuilder().setName("region2")

@@ -6,8 +6,8 @@ import "google/protobuf/duration.proto";
 // TODO  option java_package = define package naming for java
 // TODO  option java_outer_classname = define outer class name
 option java_multiple_files = true;
-// TODO option go_package = define package naming for go
-
+// TODO option go_package = verify below value is ok
+option go_package = "github.com/engytita/engytita-api/example/golang;v1alpha";
 message Wildcard { string value = 1; }
 
 message Jsonpath { string value = 1; }
@@ -38,7 +38,7 @@ message Expiration {
     string schedule = 2;
   }
 }
-     
+
 message Region {
   string name = 1;
   string datasource = 2;
