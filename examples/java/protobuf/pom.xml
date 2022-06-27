@@ -6,7 +6,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>protobuf</name>
 	<properties>
-		<org.engytita.api.basedir>${project.basedir}/../../../config/cache/v1alpha</org.engytita.api.basedir>
+		<org.engytita.api.basedir>${project.basedir}/../../..</org.engytita.api.basedir>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 	</properties>
