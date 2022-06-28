@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
-//go:generate protoc --proto_path=../../..  --go_out=../config/cache/v1alpha --go_opt=module=github.com/engytita/engytita-api/example/golang config/cache/v1alpha/region.proto config/cache/v1alpha/cache.proto config/cache/v1alpha/datasource.proto
+//go:generate protoc --proto_path=../../..  --go_out=.. --go_opt=module=github.com/engytita/engytita-api/example/golang config/cache/v1alpha/region.proto config/cache/v1alpha/cache.proto config/cache/v1alpha/datasource.proto
 
 func main() {
 	var cache = v1alpha.Cache{

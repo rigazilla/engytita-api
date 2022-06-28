@@ -7,7 +7,7 @@ import "google/protobuf/duration.proto";
 // TODO  option java_outer_classname = define outer class name
 option java_multiple_files = true;
 // TODO option go_package = verify below value is ok
-option go_package = "github.com/engytita/engytita-api/example/golang;v1alpha";
+option go_package = "github.com/engytita/engytita-api/example/golang/config/cache/v1alpha";
 message Wildcard { string value = 1; }
 
 message Jsonpath { string value = 1; }
