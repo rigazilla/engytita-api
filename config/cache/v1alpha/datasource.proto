@@ -3,7 +3,7 @@ syntax = "proto3";
 // TODO  option java_outer_classname = define outer class name
 option java_multiple_files = true;
 // TODO option go_package = verify below value is ok
-option go_package = "github.com/engytita/engytita-api/example/golang/config/cache/v1alpha";
+option go_package = "engytita-api/config/cache/v1alpha";
 
 package config.cache.v1alpha;
 

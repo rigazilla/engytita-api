@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/engytita/engytita-api/examples/golang/config/cache/v1alpha"
+	"github.com/engytita/engytita-api/examples/golang/engytita-api/config/cache/v1alpha"
 	"github.com/golang/protobuf/proto"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
-//go:generate protoc --proto_path=../../..  --go_out=.. --go_opt=module=github.com/engytita/engytita-api/example/golang config/cache/v1alpha/region.proto config/cache/v1alpha/cache.proto config/cache/v1alpha/datasource.proto
+//go:generate protoc --proto_path=../../..  --go_out=..  config/cache/v1alpha/region.proto config/cache/v1alpha/cache.proto config/cache/v1alpha/datasource.proto
 
 func main() {
 	var cache = v1alpha.Cache{
