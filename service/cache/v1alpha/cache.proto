@@ -1,0 +1,28 @@
+syntax = "proto3";
+package service.cache.v1alpha;
+
+import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
+
+// TODO  option java_package = define package naming for java
+// TODO  option java_outer_classname = define outer class name
+option java_multiple_files = true;
+// TODO option go_package = verify below value is ok
+option go_package = "engytita-api/service/cache/v1alpha";
+option java_package = "engytitaApi.service.cache.v1alpha";
+
+message Key {
+    bytes key = 1;
+}
+
+message Value {
+    bytes value = 1;
+}
+
+service CacheService {
+    rpc Get (Key) returns (Value) {
+      option (google.api.http) = {
+        get: "/api/v1alpha/{key}"
+      };
+    }
+}
