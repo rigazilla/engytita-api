@@ -9,7 +9,7 @@ import "google/api/annotations.proto";
 option java_multiple_files = true;
 // TODO option go_package = verify below value is ok
 option go_package = "gingersnap-cloud-api/service/cache/v1alpha";
-option java_package = "gingersnapCloudApi.service.cache.v1alpha";
+option java_package = "gingersnapCloud.api.service.cache.v1alpha";
 
 message Key {
     bytes key = 1;
