@@ -1,5 +1,5 @@
 syntax = "proto3";
-package service.cache.v1alpha;
+package service.cache.v1alpha2;
 
 import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
@@ -8,8 +8,8 @@ import "google/api/annotations.proto";
 // TODO  option java_outer_classname = define outer class name
 option java_multiple_files = true;
 // TODO option go_package = verify below value is ok
-option go_package = "gingersnap-cloud-api/service/cache/v1alpha";
-option java_package = "gingersnapCloud.api.service.cache.v1alpha";
+option go_package = "gingersnap-cloud-api/service/cache/v1alpha2";
+option java_package = "gingersnapCloud.api.service.cache.v1alpha2";
 
 message Key {
     bytes key = 1;
@@ -22,7 +22,7 @@ message Value {
 service CacheService {
     rpc Get (Key) returns (Value) {
       option (google.api.http) = {
-        get: "/service/cache/v1alpha/{key}"
+        get: "/service/cache/v1alpha2/{key}"
       };
     }
 }
