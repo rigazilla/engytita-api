@@ -18,10 +18,30 @@ message Value {
     bytes value = 1;
 }
 
+message Options {
+  int64 ttl = 1;
+}
+
+message PutRequest {
+  Key key = 1;
+  Value value = 2;
+  Options opts = 3;
+}
+
+message PutResponse {
+  string response = 1;
+}
+
 service CacheService {
     rpc Get (Key) returns (Value) {
       option (google.api.http) = {
         get: "/service/cache/v1alpha2/{key}"
+      };
+    }
+    rpc Put(PutRequest) returns (PutResponse) {
+      option (google.api.http) = {
+        post: "/service/cache/v1alpha2/{key.key}"
+        body: "*"
       };
     }
 }
