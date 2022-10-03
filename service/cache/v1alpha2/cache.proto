@@ -11,15 +11,23 @@ option go_package = "gingersnap-cloud-api/service/cache/v1alpha2";
 option java_package = "gingersnapCloud.api.service.cache.v1alpha2";
 
 message Key {
-    bytes key = 1;
+    string key = 1;
 }
 
 message Value {
-    bytes value = 1;
+    string value = 1;
 }
 
 message Options {
   int64 ttl = 1;
+}
+
+message GetRequest {
+  Key key = 1;
+}
+
+message GetResponse {
+  Value value = 1;
 }
 
 message PutRequest {
@@ -32,16 +40,43 @@ message PutResponse {
   string response = 1;
 }
 
+message DeleteRequest {
+  Key key = 1;
+  Options opts = 2;
+}
+
+message DeleteResponse {
+  string response = 1;
+}
+
+message GetPutResponse {
+  Value value = 1;
+}
+
 service CacheService {
-    rpc Get (Key) returns (Value) {
+    rpc Get (GetRequest) returns (GetResponse) {
       option (google.api.http) = {
-        get: "/service/cache/v1alpha2/{key}"
+        get: "/service/cache/v1alpha2/{key.key}"
       };
     }
+
     rpc Put(PutRequest) returns (PutResponse) {
       option (google.api.http) = {
         post: "/service/cache/v1alpha2/{key.key}"
         body: "*"
+      };
+    }
+
+    rpc GetPut(PutRequest) returns (GetPutResponse) {
+      option (google.api.http) = {
+        put: "/service/cache/v1alpha2/{key.key}/value"
+        body: "*"
+      };
+    }
+
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {
+      option (google.api.http) = {
+        delete: "/service/cache/v1alpha2/{key.key}"
       };
     }
 }
