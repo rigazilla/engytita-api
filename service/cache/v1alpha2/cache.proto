@@ -7,8 +7,8 @@ import "google/api/annotations.proto";
 // TODO  option java_outer_classname = define outer class name
 option java_multiple_files = true;
 // TODO option go_package = verify below value is ok
-option go_package = "gingersnap-cloud-api/service/cache/v1alpha2";
-option java_package = "gingersnapCloud.api.service.cache.v1alpha2";
+option go_package = "gingersnap-api/service/cache/v1alpha2";
+option java_package = "gingersnap.api.service.cache.v1alpha2";
 
 message Key {
     string key = 1;
