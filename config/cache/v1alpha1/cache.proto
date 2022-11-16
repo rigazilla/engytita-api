@@ -30,7 +30,7 @@ message DataSourceSpec {
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // Describes a caching rule behaviours
-message EagerCachingRuleSpec {
+message EagerCacheRuleSpec {
   // Reference to the related Cache CR
   NamespacedRef  cacheRef = 1;
   // Resource profile for the DB syncer
@@ -46,7 +46,7 @@ message EagerCachingRuleSpec {
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // Describes a caching rule behaviours
-message LazyCachingRuleSpec {
+message LazyCacheRuleSpec {
   // Reference to the related Cache CR
   NamespacedRef cacheRef = 1;
   // The select query needed to fetch values from the DB
@@ -122,9 +122,9 @@ message CacheConf {
   CacheSpec cacheSpec = 1;
   // map of all the Eager rules attached to this cache. Key should be of the for
   // namespace.name (needs to be a string, NamespacedRef cannot be used).
-  map<string, EagerCachingRuleSpec> eagerCachingRuleSpecs = 2;
+  map<string, EagerCacheRuleSpec> eagerCacheRuleSpecs = 2;
   // map of all the Lazy rules attached to this cache. Key should be of the for
   // namespace.name.
-  map<string, LazyCachingRuleSpec> LazyCachingRuleSpecs = 3;
+  map<string, LazyCacheRuleSpec> LazyCacheRuleSpecs = 3;
 }
 
