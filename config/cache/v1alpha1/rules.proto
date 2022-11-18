@@ -1,0 +1,107 @@
+syntax = "proto3";
+package gingersnap.config.cache.v1alpha1;
+// TODO: use the k8s type for quantity. Check the Java side
+// import "apimachinery/pkg/api/resource/quantity.proto";
+
+option java_multiple_files = true;
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes a data source connection. A map is available for passing implementation specific
+// properties.
+message DataSourceSpec {
+    // Type and version of the underlaying DB. Needed to decide which drivers need to be used
+    DBType dbType = 1;
+    // Additional properties. DB specific
+    map<string,string> connectionProperties = 2;
+    // Reference to the ServiceBinding CR
+    NamespacedRef serviceBindingRef = 3;
+  }
+  
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Describes a caching rule behaviours
+  message EagerCacheRuleSpec {
+    // Reference to the related Cache CR
+    NamespacedRef  cacheRef = 1;
+    // Resource profile for the DB syncer
+    Resources resources = 2;
+    // Name of the table from where the data will be produced. Format could change depending
+    // on the DB: table or schema.table must be at least supported
+    string tableName = 3;
+    // Format of the key for the get(key) operation
+    Key key = 4;
+    // Query columns used to build the entry value
+    Value value = 5;
+  }
+  
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Describes a caching rule behaviours
+  message LazyCacheRuleSpec {
+    // Reference to the related Cache CR
+    NamespacedRef cacheRef = 1;
+    // The select query needed to fetch values from the DB
+    string query = 2;
+    Value value = 3;
+  }
+  
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Describes how the key is build from the query result row
+  message Key {
+    // Format of the key for the get(key) operation
+    KeyFormat format = 1;
+    // Separator character in case of plain test key format
+    string keySeparator = 2;
+    // Table columns composing the primary key
+    repeated string keyColumns = 3;
+  }
+  
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Describes how the entry value is build from the query result row
+  message Value {
+    // Table columns that will be fetched from the DB (select clause)
+    repeated string valueColumns = 1;
+  }
+  
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Describes a resources profile required for a workload
+  message Resources {
+    ResourceQuantity requests = 1;
+    ResourceQuantity limits = 2;
+  }
+  
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Describes a resource quantities
+  message ResourceQuantity {
+    // TODO: use the k8s type for quantity. Check the Java side
+    // k8s.io.apimachinery.pkg.api.resource.Quantity memory = 1;
+    // Memory quantity
+    string memory = 1;
+    // TODO: use the k8s type for quantity. Check the Java side
+    // k8s.io.apimachinery.pkg.api.resource.Quantity cpu = 2;
+    // CPU quantity
+    string cpu = 2;
+  }
+  
+  // A namespaced reference to a resource
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  message NamespacedRef {
+    // Resource name
+    string name = 1;
+    // Resource namespace
+    string namespace = 2;
+  }
+  
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Type of the database in format DBTYPE_VERSION
+  enum DBType {
+    POSTGRES_14 = 0;
+    MYSQL_8 = 1;
+    SQL_SERVER_2019 = 2;
+  }
+  
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Supported format for the key of the cache entry
+  enum KeyFormat {
+    TEXT = 0;
+    JSON = 1;
+  }
+  
