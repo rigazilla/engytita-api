@@ -22,15 +22,13 @@ message DataSourceSpec {
   message EagerCacheRuleSpec {
     // Reference to the related Cache CR
     NamespacedRef  cacheRef = 1;
-    // Resource profile for the DB syncer
-    Resources resources = 2;
     // Name of the table from where the data will be produced. Format could change depending
     // on the DB: table or schema.table must be at least supported
-    string tableName = 3;
+    string tableName = 2;
     // Format of the key for the get(key) operation
-    Key key = 4;
+    Key key = 3;
     // Query columns used to build the entry value
-    Value value = 5;
+    Value value = 4;
   }
   
   // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -59,26 +57,6 @@ message DataSourceSpec {
   message Value {
     // Table columns that will be fetched from the DB (select clause)
     repeated string valueColumns = 1;
-  }
-  
-  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-  // Describes a resources profile required for a workload
-  message Resources {
-    ResourceQuantity requests = 1;
-    ResourceQuantity limits = 2;
-  }
-  
-  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-  // Describes a resource quantities
-  message ResourceQuantity {
-    // TODO: use the k8s type for quantity. Check the Java side
-    // k8s.io.apimachinery.pkg.api.resource.Quantity memory = 1;
-    // Memory quantity
-    string memory = 1;
-    // TODO: use the k8s type for quantity. Check the Java side
-    // k8s.io.apimachinery.pkg.api.resource.Quantity cpu = 2;
-    // CPU quantity
-    string cpu = 2;
   }
   
   // A namespaced reference to a resource
