@@ -9,9 +9,56 @@ option java_multiple_files = true;
 // Describes the desired configuration for a Cache. Only DB Cache Service is supported atm
 message CacheSpec {
   // Resource profile for the cache provider
-  Resources resources = 1;
+  CacheDeploymentSpec deployment = 1;
+  // Resource profile for the db-syncer
+  DBSyncerDeploymentSpec dbSyncer = 2;
   // DatasourceRef or a ServiceBindingRef (TODO clarify)
-  DataSourceSpec dataSource = 2;
+  DataSourceSpec dataSource = 3;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes the spec of the cache provider
+message CacheDeploymentSpec {
+  // The type of Cache deployment
+  CacheDeploymentType type = 1;
+  // Resource profile for cache pods
+  Resources resource = 2;
+  // Max number of replicas for type CLUSTER
+  int32 replicas = 3;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes the spec of the db-syncer deployment
+message DBSyncerDeploymentSpec {
+  // Resource profile for db-syncer pods
+  Resources resources = 1;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// The type of cache deployment
+enum CacheDeploymentType {
+  LOCAL = 0;
+  CLUSTER = 1;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes a resources profile required for a workload
+message Resources {
+  ResourceQuantity requests = 1;
+  ResourceQuantity limits = 2;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes a resource quantities
+message ResourceQuantity {
+  // TODO: use the k8s type for quantity. Check the Java side
+  // k8s.io.apimachinery.pkg.api.resource.Quantity memory = 1;
+  // Memory quantity
+  string memory = 1;
+  // TODO: use the k8s type for quantity. Check the Java side
+  // k8s.io.apimachinery.pkg.api.resource.Quantity cpu = 2;
+  // CPU quantity
+  string cpu = 2;
 }
 
 // Document representation of a cache and all the related rules
