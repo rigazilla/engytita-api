@@ -10,21 +10,21 @@ option java_multiple_files = true;
 // properties.
 message DataSourceSpec {
     // Type and version of the underlaying DB. Needed to decide which drivers need to be used
-    DBType dbType = 1;
+    DBType db_type = 1;
     // Additional properties. DB specific
-    map<string,string> connectionProperties = 2;
+    map<string,string> connection_properties = 2;
     // Reference to the ServiceBinding CR
-    NamespacedRef serviceBindingRef = 3;
+    NamespacedRef service_binding_ref = 3;
   }
   
   // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
   // Describes a caching rule behaviours
   message EagerCacheRuleSpec {
     // Reference to the related Cache CR
-    NamespacedRef  cacheRef = 1;
+    NamespacedRef  cache_ref = 1;
     // Name of the table from where the data will be produced. Format could change depending
     // on the DB: table or schema.table must be at least supported
-    string tableName = 2;
+    string table_name = 2;
     // Format of the key for the get(key) operation
     Key key = 3;
     // Query columns used to build the entry value
@@ -35,7 +35,7 @@ message DataSourceSpec {
   // Describes a caching rule behaviours
   message LazyCacheRuleSpec {
     // Reference to the related Cache CR
-    NamespacedRef cacheRef = 1;
+    NamespacedRef cache_ref = 1;
     // The select query needed to fetch values from the DB
     string query = 2;
     Value value = 3;
@@ -47,16 +47,16 @@ message DataSourceSpec {
     // Format of the key for the get(key) operation
     KeyFormat format = 1;
     // Separator character in case of plain test key format
-    string keySeparator = 2;
+    string key_separator = 2;
     // Table columns composing the primary key
-    repeated string keyColumns = 3;
+    repeated string key_columns = 3;
   }
   
   // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
   // Describes how the entry value is build from the query result row
   message Value {
     // Table columns that will be fetched from the DB (select clause)
-    repeated string valueColumns = 1;
+    repeated string value_columns = 1;
   }
   
   // A namespaced reference to a resource
