@@ -20,5 +20,5 @@ jobs:
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
-          version: 'v21.9'
+          version: 'v3.21.9'
 
