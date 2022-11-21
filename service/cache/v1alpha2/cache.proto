@@ -1,0 +1,82 @@
+syntax = "proto3";
+package service.cache.v1alpha2;
+
+import "google/api/annotations.proto";
+
+// TODO  option java_package = define package naming for java
+// TODO  option java_outer_classname = define outer class name
+option java_multiple_files = true;
+// TODO option go_package = verify below value is ok
+option go_package = "gingersnap-api/service/cache/v1alpha2";
+option java_package = "gingersnap.api.service.cache.v1alpha2";
+
+message Key {
+    string key = 1;
+}
+
+message Value {
+    string value = 1;
+}
+
+message Options {
+  int64 ttl = 1;
+}
+
+message GetRequest {
+  Key key = 1;
+}
+
+message GetResponse {
+  Value value = 1;
+}
+
+message PutRequest {
+  Key key = 1;
+  Value value = 2;
+  Options opts = 3;
+}
+
+message PutResponse {
+  string response = 1;
+}
+
+message DeleteRequest {
+  Key key = 1;
+  Options opts = 2;
+}
+
+message DeleteResponse {
+  string response = 1;
+}
+
+message GetPutResponse {
+  Value value = 1;
+}
+
+service CacheService {
+    rpc Get (GetRequest) returns (GetResponse) {
+      option (google.api.http) = {
+        get: "/service/cache/v1alpha2/{key.key}"
+      };
+    }
+
+    rpc Put(PutRequest) returns (PutResponse) {
+      option (google.api.http) = {
+        post: "/service/cache/v1alpha2/{key.key}"
+        body: "*"
+      };
+    }
+
+    rpc GetPut(PutRequest) returns (GetPutResponse) {
+      option (google.api.http) = {
+        put: "/service/cache/v1alpha2/{key.key}/value"
+        body: "*"
+      };
+    }
+
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {
+      option (google.api.http) = {
+        delete: "/service/cache/v1alpha2/{key.key}"
+      };
+    }
+}

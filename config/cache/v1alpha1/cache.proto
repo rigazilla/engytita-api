@@ -1,0 +1,73 @@
+syntax = "proto3";
+package gingersnap.config.cache.v1alpha1;
+// TODO: use the k8s type for quantity. Check the Java side
+// import "apimachinery/pkg/api/resource/quantity.proto";
+import "config/cache/v1alpha1/rules.proto";
+option java_multiple_files = true;
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes the desired configuration for a Cache. Only DB Cache Service is supported atm
+message CacheSpec {
+  // Resource profile for the cache provider
+  CacheDeploymentSpec deployment = 1;
+  // Resource profile for the db-syncer
+  DBSyncerDeploymentSpec dbSyncer = 2;
+  // DatasourceRef or a ServiceBindingRef (TODO clarify)
+  DataSourceSpec dataSource = 3;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes the spec of the cache provider
+message CacheDeploymentSpec {
+  // The type of Cache deployment
+  CacheDeploymentType type = 1;
+  // Resource profile for cache pods
+  Resources resource = 2;
+  // Max number of replicas for type CLUSTER
+  int32 replicas = 3;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes the spec of the db-syncer deployment
+message DBSyncerDeploymentSpec {
+  // Resource profile for db-syncer pods
+  Resources resources = 1;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// The type of cache deployment
+enum CacheDeploymentType {
+  LOCAL = 0;
+  CLUSTER = 1;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes a resources profile required for a workload
+message Resources {
+  ResourceQuantity requests = 1;
+  ResourceQuantity limits = 2;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes a resource quantities
+message ResourceQuantity {
+  // TODO: use the k8s type for quantity. Check the Java side
+  // k8s.io.apimachinery.pkg.api.resource.Quantity memory = 1;
+  // Memory quantity
+  string memory = 1;
+  // TODO: use the k8s type for quantity. Check the Java side
+  // k8s.io.apimachinery.pkg.api.resource.Quantity cpu = 2;
+  // CPU quantity
+  string cpu = 2;
+}
+
+// Document representation of a cache and all the related rules
+message CacheConf {
+  CacheSpec cacheSpec = 1;
+  // map of all the Eager rules attached to this cache. Key should be of the for
+  // namespace.name (needs to be a string, NamespacedRef cannot be used).
+  map<string, EagerCacheRuleSpec> eagerCacheRuleSpecs = 2;
+  // map of all the Lazy rules attached to this cache. Key should be of the for
+  // namespace.name.
+  map<string, LazyCacheRuleSpec> LazyCacheRuleSpecs = 3;
+}
