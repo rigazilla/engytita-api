@@ -21,9 +21,11 @@ jobs:
         uses: arduino/setup-protoc@v1
       - name: Run Protoc lint
         run: |
+          pwd
+          tree .
           go install github.com/ckaznocha/protoc-gen-lint@latest
           protoc --lint_out=. \
           --lint_opt=Mconfig/cache/v1alpha1/cache.proto=github.com/gingersnap-project/operator/api/v1alpha1,\
           Mconfig/cache/v1alpha1/rules.proto=github.com/gingersnap-project/operator/api/v1alpha1 \
           config/cache/v1alpha1/*.proto
-
+        
