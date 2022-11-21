@@ -11,9 +11,9 @@ message CacheSpec {
   // Resource profile for the cache provider
   CacheDeploymentSpec deployment = 1;
   // Resource profile for the db-syncer
-  DBSyncerDeploymentSpec dbSyncer = 2;
+  DBSyncerDeploymentSpec db_syncer = 2;
   // DatasourceRef or a ServiceBindingRef (TODO clarify)
-  DataSourceSpec dataSource = 3;
+  DataSourceSpec data_source = 3;
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -63,11 +63,11 @@ message ResourceQuantity {
 
 // Document representation of a cache and all the related rules
 message CacheConf {
-  CacheSpec cacheSpec = 1;
+  CacheSpec cache_spec = 1;
   // map of all the Eager rules attached to this cache. Key should be of the for
   // namespace.name (needs to be a string, NamespacedRef cannot be used).
-  map<string, EagerCacheRuleSpec> eagerCacheRuleSpecs = 2;
+  map<string, EagerCacheRuleSpec> eager_cache_rule_specs = 2;
   // map of all the Lazy rules attached to this cache. Key should be of the for
   // namespace.name.
-  map<string, LazyCacheRuleSpec> LazyCacheRuleSpecs = 3;
+  map<string, LazyCacheRuleSpec> lazy_cache_rule_specs = 3;
 }
