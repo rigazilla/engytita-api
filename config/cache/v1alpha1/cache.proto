@@ -22,7 +22,7 @@ message CacheDeploymentSpec {
   // The type of Cache deployment
   CacheDeploymentType type = 1;
   // Resource profile for cache pods
-  Resources resource = 2;
+  Resources resources = 2;
   // Max number of replicas for type CLUSTER
   int32 replicas = 3;
 }
