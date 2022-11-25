@@ -9,6 +9,7 @@ option java_multiple_files = true;
 // Describes a data source connection. A map is available for passing implementation specific
 // properties.
 message DataSourceSpec {
+    // +kubebuilder:validation:Enum=POSTGRES_14;MYSQL_8;SQL_SERVER_2019
     // Type and version of the underlaying DB. Needed to decide which drivers need to be used
     DBType db_type = 1;
     // Additional properties. DB specific
@@ -16,7 +17,17 @@ message DataSourceSpec {
     // Reference to the ServiceBinding CR
     NamespacedRef service_binding_ref = 3;
   }
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:validation:Type=string
+// Type of the database in format DBTYPE_VERSION
+enum DBType {
+    POSTGRES_14 = 0;
+    MYSQL_8 = 1;
+    SQL_SERVER_2019 = 2;
+  }
   
+
   // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
   // Describes a caching rule behaviours
   message EagerCacheRuleSpec {
@@ -44,6 +55,7 @@ message DataSourceSpec {
   // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
   // Describes how the key is build from the query result row
   message Key {
+    // +kubebuilder:validation:Enum=TEXT;JSON
     // Format of the key for the get(key) operation
     KeyFormat format = 1;
     // Separator character in case of plain test key format
@@ -51,7 +63,16 @@ message DataSourceSpec {
     // Table columns composing the primary key
     repeated string key_columns = 3;
   }
-  
+
+
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // +kubebuilder:validation:Type=string
+  // Supported format for the key of the cache entry
+  enum KeyFormat {
+    TEXT = 0;
+    JSON = 1;
+  }
+
   // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
   // Describes how the entry value is build from the query result row
   message Value {
@@ -67,19 +88,3 @@ message DataSourceSpec {
     // Resource namespace
     string namespace = 2;
   }
-  
-  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-  // Type of the database in format DBTYPE_VERSION
-  enum DBType {
-    POSTGRES_14 = 0;
-    MYSQL_8 = 1;
-    SQL_SERVER_2019 = 2;
-  }
-  
-  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-  // Supported format for the key of the cache entry
-  enum KeyFormat {
-    TEXT = 0;
-    JSON = 1;
-  }
-  

@@ -19,6 +19,7 @@ message CacheSpec {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // Describes the spec of the cache provider
 message CacheDeploymentSpec {
+  // +kubebuilder:validation:Enum=LOCAL;CLUSTER
   // The type of Cache deployment
   CacheDeploymentType type = 1;
   // Resource profile for cache pods
@@ -28,17 +29,18 @@ message CacheDeploymentSpec {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// Describes the spec of the db-syncer deployment
-message DBSyncerDeploymentSpec {
-  // Resource profile for db-syncer pods
-  Resources resources = 1;
-}
-
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:validation:Type=string
 // The type of cache deployment
 enum CacheDeploymentType {
   LOCAL = 0;
   CLUSTER = 1;
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// Describes the spec of the db-syncer deployment
+message DBSyncerDeploymentSpec {
+  // Resource profile for db-syncer pods
+  Resources resources = 1;
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
