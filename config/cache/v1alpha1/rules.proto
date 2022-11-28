@@ -4,6 +4,7 @@ package gingersnap.config.cache.v1alpha1;
 // import "apimachinery/pkg/api/resource/quantity.proto";
 
 option java_multiple_files = true;
+option java_package = "io.gingersnapproject.proto.api.config.v1alpha1";
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // Describes a data source connection. A map is available for passing implementation specific
