@@ -15,7 +15,7 @@ option java_package = "io.gingersnapproject.proto.api.config.v1alpha1";
     // on the DB: table or schema.table must be at least supported
     string table_name = 2;
     // Format of the key for the get(key) operation
-    Key key = 3;
+    EagerCacheKey key = 3;
     // Query columns used to build the entry value
     Value value = 4;
   }
@@ -27,12 +27,23 @@ option java_package = "io.gingersnapproject.proto.api.config.v1alpha1";
     NamespacedObjectReference cache_ref = 1;
     // The select query needed to fetch values from the DB
     string query = 2;
-    Value value = 3;
+    // Format of the key for the get(key) operation
+    LazyCacheKey key = 3;
   }
-  
+
   // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
   // Describes how the key is build from the query result row
-  message Key {
+  message LazyCacheKey {
+    // +kubebuilder:validation:Enum=TEXT;JSON
+    // Format of the key for the get(key) operation
+    KeyFormat format = 1;
+    // Separator character in case of plain test key format
+    string key_separator = 2;
+  }
+
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Describes how the key is build from the query result row
+  message EagerCacheKey {
     // +kubebuilder:validation:Enum=TEXT;JSON
     // Format of the key for the get(key) operation
     KeyFormat format = 1;
