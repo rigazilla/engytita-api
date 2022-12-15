@@ -18,6 +18,15 @@ option java_package = "io.gingersnapproject.proto.api.config.v1alpha1";
     EagerCacheKey key = 3;
     // Query columns used to build the entry value
     Value value = 4;
+    // Rule Query configuration
+    QuerySpec query = 5;
+  }
+
+  // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+  // Describes all Query related configuration
+  message QuerySpec {
+    // Whether a Rule can be queried or not
+    bool enabled = 1;
   }
   
   // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
