@@ -15,6 +15,7 @@ import (
 )
 
 func main() {
+	rmInfilePtr := flag.Bool("rm", false, "remove input file")
 	flag.Parse()
 	args := flag.Args()
 	fset := token.NewFileSet()
@@ -24,23 +25,32 @@ func main() {
 		os.Exit(1)
 	}
 	fileName := args[0]
-	outFile, err := os.Create(args[1])
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
+	{
+		outFile, err := os.Create(args[1])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+		defer outFile.Close()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+		// get ast Node of whole file;
+		ff, err := parser.ParseFile(fset, fileName, nil, parser.ParseComments)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+		var v visitor
+		ast.Walk(v, ff)
+		if err := format.Node(outFile, fset, ff); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
 	}
-	// get ast Node of whole file;
-	ff, err := parser.ParseFile(fset, fileName, nil, parser.ParseComments)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
-	}
-	var v visitor
-	ast.Walk(v, ff)
-	if err := format.Node(outFile, fset, ff); err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
-
+	if *rmInfilePtr {
+		os.Remove(fileName)
 	}
 }
 

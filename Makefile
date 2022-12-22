@@ -35,6 +35,21 @@ lint-cache: protoc protoc-gen-lint ## Run protoc-gen-lint against protobuf API
 	          	--lint_opt=Mconfig/cache/v1alpha1/cache.proto=github.com/gingersnap-project/operator/api/v1alpha1,Mconfig/cache/v1alpha1/rules.proto=github.com/gingersnap-project/operator/api/v1alpha1 \
 			  	config/cache/v1alpha1/*.proto
 
+## Location to install dependencies to
+OUTPATH ?= $(shell pwd)/tests/testOut
+$(OUTPATH):
+	mkdir -p $(OUTPATH)
+
+.PHONY: test
+test:  test-polyglot
+
+.PHONY: test-polyglot
+test-polyglot: $(PROTOC) applygingersnapstyle-gen $(OUTPATH)
+## Running test more time to populate the output folder with cases
+	cd tests/golang && goOutPath=../testOut PATH=$(LOCALBIN):$(PATH) go generate test
+	cd tests/java && mvn test -DjavaOutPath=../testOut
+	cd tests/golang && goOutPath=../testOut PATH=$(LOCALBIN):$(PATH) go generate test
+
 ##@ Build Dependencies
 
 ## Location to install dependencies to
@@ -75,3 +90,8 @@ ifeq (,$(shell (protoc 2>/dev/null  && protoc --version) | grep 'libprotoc $(PRO
 	}
 endif
 endif
+
+.PHONY: applygingersnapstyle-gen
+export APPLYGINGERSNAPSTYLE_GEN = ./bin/applygingersnapstyle-gen
+applygingersnapstyle-gen: $(LOCALBIN)
+	cd cmd/applygingersnapstyle-gen && GOBIN=$(LOCALBIN) go install
