@@ -42,7 +42,7 @@ OUTPATH ?= $(shell pwd)/tests/testOut
 test:  test-polyglot
 
 .PHONY: test-polyglot
-test-polyglot: $(PROTOC) applygingersnapstyle-gen
+test-polyglot: protoc applygingersnapstyle-gen
 	mkdir -p $(OUTPATH)
 ## Running test more time to populate the output folder with cases
 	cd tests/golang &&  PATH=$(LOCALBIN):$(PATH) go generate && goOutPath=../testOut go test
@@ -80,17 +80,14 @@ ifeq (,$(wildcard $(PROTOC_GEN_LINT)))
 endif
 
 .PHONY: protoc
-export PROTOC = ./bin/protoc
 protoc: $(LOCALBIN) ## Download protoc locally if necessary.
 ifeq (,$(wildcard $(PROTOC)))
-ifeq (,$(shell (protoc 2>/dev/null  && protoc --version) | grep 'libprotoc $(PROTOC_VERSION)' ))
 	@{ \
 	set -e ;\
 	mkdir -p $(dir $(PROTOC)) ;\
 	curl -sSLo protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v$(PROTOC_VERSION)/protoc-$(PROTOC_VERSION)-linux-x86_64.zip ;\
 	unzip -DD protoc.zip bin/protoc ;\
 	}
-endif
 endif
 
 .PHONY: protoc-gen-go
