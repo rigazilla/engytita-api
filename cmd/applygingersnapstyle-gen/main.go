@@ -38,8 +38,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			os.Exit(1)
 		}
-		var v visitor
-		ast.Walk(v, ff)
+		ast.Walk(visitor{}, ff)
 		if err := format.Node(outFile, fset, ff); err != nil {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			os.Exit(1)
