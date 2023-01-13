@@ -37,18 +37,18 @@ lint-cache: protoc protoc-gen-lint ## Run protoc-gen-lint against protobuf API
 
 ## Location to install dependencies to
 OUTPATH ?= $(shell pwd)/tests/testOut
-$(OUTPATH):
-	mkdir -p $(OUTPATH)
 
 .PHONY: test
 test:  test-polyglot
 
 .PHONY: test-polyglot
-test-polyglot: $(PROTOC) applygingersnapstyle-gen $(OUTPATH)
+test-polyglot: $(PROTOC) applygingersnapstyle-gen
+	mkdir -p $(OUTPATH)
 ## Running test more time to populate the output folder with cases
-	cd tests/golang && goOutPath=../testOut PATH=$(LOCALBIN):$(PATH) go generate test
+	cd tests/golang &&  PATH=$(LOCALBIN):$(PATH) go generate && goOutPath=../testOut go test
 	cd tests/java && mvn test -DjavaOutPath=../testOut
-	cd tests/golang && goOutPath=../testOut PATH=$(LOCALBIN):$(PATH) go generate test
+	cd tests/golang &&  PATH=$(LOCALBIN):$(PATH) go generate && goOutPath=../testOut go test
+	rm -rf $(OUTPATH)
 
 ##@ Build Dependencies
 
@@ -60,9 +60,11 @@ $(LOCALBIN):
 ## Tool Binaries
 PROTOC ?= $(LOCALBIN)/protoc
 PROTOC_GEN_LINT ?= $(LOCALBIN)/protoc-gen-lint
+PROTOC_GEN_GO ?= $(LOCALBIN)/protoc-gen-go
 ## Tool Versions
 PROTOC_VERSION ?= 21.9
 PROTOC_GEN_LINT_VERSION ?= v0.3.0
+PROTOC_GEN_GO_VERSION ?= v1.28.1
 
 .PHONY: protoc-gen-lint
 export PROTOC_GEN_LINT = ./bin/protoc-gen-lint
@@ -89,6 +91,19 @@ ifeq (,$(shell (protoc 2>/dev/null  && protoc --version) | grep 'libprotoc $(PRO
 	unzip -DD protoc.zip bin/protoc ;\
 	}
 endif
+endif
+
+.PHONY: protoc-gen-go
+export PROTOC_GEN_GO = ./bin/protoc-gen-go
+protoc-gen-go: $(LOCALBIN) ## Download protc-gen-lint locally if necessary.
+ifeq (,$(wildcard $(PROTOC_GEN_GO)))
+	@{ \
+	set -e ;\
+	mkdir -p $(dir $(PROTOC_GEN_GO)) ;\
+	curl -sSLo protoc-gen-go.tar.gz https://github.com/protocolbuffers/protobuf-go/releases/download/$(PROTOC_GEN_GO_VERSION)/protoc-gen-go.$(PROTOC_GEN_GO_VERSION).linux.amd64.tar.gz ;\
+	tar xf protoc-gen-go.tar.gz -C $(LOCALBIN) ;\
+	chmod u+x $(PROTOC_GEN_GO) ;\
+	}
 endif
 
 .PHONY: applygingersnapstyle-gen

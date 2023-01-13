@@ -24,6 +24,7 @@ import (
 // The --go_opt=module=.. strips out the default module for the generated files, so files are generated
 // in the `gingersnap-api/config/cache/v1alpha` folder in the go module root and can be imported as
 // `import "your-module-name/gingersnap-api/config/cache/v1alpha`
+//
 //go:generate protoc --proto_path=../.. --include_source_info --descriptor_set_out=descriptor --go_out=. --go_opt=Mconfig/cache/v1alpha1/cache.proto=github.com/gingersnap-project/api/tests/config/cache/v1alpha1 --go_opt=Mconfig/cache/v1alpha1/rules.proto=github.com/gingersnap-project/api/tests/config/cache/v1alpha1 --go_opt=paths=source_relative config/cache/v1alpha1/cache.proto config/cache/v1alpha1/rules.proto
 //go:generate applygingersnapstyle-gen --rm config/cache/v1alpha1/rules.pb.go config/cache/v1alpha1/zz_rules.pb.go
 //go:generate applygingersnapstyle-gen --rm config/cache/v1alpha1/cache.pb.go config/cache/v1alpha1/zz_cache.pb.go
