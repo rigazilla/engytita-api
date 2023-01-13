@@ -32,10 +32,6 @@ func main() {
 			os.Exit(1)
 		}
 		defer outFile.Close()
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "error: %v\n", err)
-			os.Exit(1)
-		}
 		// get ast Node of whole file;
 		ff, err := parser.ParseFile(fset, fileName, nil, parser.ParseComments)
 		if err != nil {
