@@ -42,7 +42,7 @@ OUTPATH ?= $(shell pwd)/tests/testOut
 test:  test-polyglot
 
 .PHONY: test-polyglot
-test-polyglot: protoc applygingersnapstyle-gen
+test-polyglot: protoc protoc-gen-go applygingersnapstyle-gen
 	mkdir -p $(OUTPATH)
 ## Running test more time to populate the output folder with cases
 	cd tests/golang &&  PATH=$(LOCALBIN):$(PATH) go generate && goOutPath=../testOut go test
